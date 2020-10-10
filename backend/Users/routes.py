@@ -10,3 +10,6 @@ def signup():
 def login():
     return User().login()
 
+@app.route("/auth/signout/",methods=['POST'])
+def signOut():
+    return User().signOut()
