@@ -79,10 +79,17 @@ class User:
                 if (user_errors and org_errors):
                     return {"message": "Invalid data entered"},500
                 if (org_errors):
-                    db.Users.update_one({'_id' : userId}, {'$set': data})
+                    data = db.Users.update_one({'_id' : userId}, {'$set': data})
+                    if data.matched_count > 0:
+                        return {"message": "Profile updated successfully"},200
+                    else:
+                        return {"message": "Invalid data entered"},500
                 else:
-                    db.organisers.update_one({'_id' : userId}, {'$set': data})
-                return {"message": "Profile updated successfully"},200
+                    data = db.organisers.update_one({'_id' : userId}, {'$set': data})
+                    if data.matched_count > 0:
+                        return {"message": "Profile updated successfully"},200
+                    else:
+                        return {"message": "Invalid data entered"},500
             except:
                 return {'error': 'Update failed'}, 400
 
