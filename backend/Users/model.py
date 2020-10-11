@@ -56,6 +56,7 @@ class User:
     def profile(self,userId):
         if (request.method=="GET"):
             data = db.Users.find_one({'_id': userId})
+            del data['password']
             return data
         if (request.method=="PATCH"):
             data = request.json
