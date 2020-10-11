@@ -2,6 +2,7 @@ from flask import request, jsonify, session
 from app.app import db
 from passlib.hash import pbkdf2_sha256
 from functools import wraps
+from Users.user_schema import profile_schema
 import uuid
 import jwt
 import  os
@@ -51,6 +52,26 @@ class User:
     def signOut(self):
         session.clear()
         return {'message': 'Successfully signed out'}, 200
+
+    def profile(self,userId):
+        if (request.method=="GET"):
+            data = db.Users.find_one({'_id': userId})
+            del data['password']
+            return data
+        if (request.method=="PATCH"):
+            data = request.json
+            data.pop('token', None)
+            try:
+                errors = profile_schema.validate(data)
+                if (errors):
+                    return {"message": "Invalid data entered"},500
+                db.Users.update_one({'_id' : userId}, {'$set': data})
+                return {"message": "Profile updated successfully"},200
+            except:
+                return {'error': 'Update failed'}, 400
+
+
+
 
 def checkJWT(f):
     @wraps(f)
