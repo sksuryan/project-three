@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  LoginVC.swift
 //  MLHSpeakerApp
 //
 //  Created by Mondale on 10/11/20.
@@ -10,99 +10,120 @@ import UIKit
 
 class LoginVC: UIViewController {
 
-
-        var firstView: OnboardingPage!
-        var secondView: OnboardingPage!
-        var thirdView: OnboardingPage!
-        
-        var pagesArray: [OnboardingPage] = []
-        
-        let scrollView: UIScrollView = {
-            let scrollView = UIScrollView()
-            scrollView.translatesAutoresizingMaskIntoConstraints = false
-            scrollView.isPagingEnabled = true
-            scrollView.showsHorizontalScrollIndicator = false
-            return scrollView
-        }()
-
-        let container: UIStackView = {
-            let view = UIStackView()
-            view.axis = .horizontal
-            view.spacing = 0
-            view.translatesAutoresizingMaskIntoConstraints = false
-            view.distribution = .fillEqually
-            return view
-        }()
-        
-        let pageControl: UIPageControl = {
-            let pageControl = UIPageControl()
-            pageControl.currentPage = 0
-            pageControl.isUserInteractionEnabled = false
-            pageControl.pageIndicatorTintColor = UIColor.systemGray
-            pageControl.currentPageIndicatorTintColor = UIColor.white
-            pageControl.translatesAutoresizingMaskIntoConstraints = false
-            return pageControl
-        }()
-        
-        
-        override func viewDidLoad() {
-            super.viewDidLoad()
-            // Do any additional setup after loading the view.
-            setupScrollView()
-            setViews()
-            setPageControl()
-        }
-
-        func setupScrollView(){
-            scrollView.delegate = self
-            view.addSubview(scrollView)
-            
-            scrollView.addSubview(container)
-            
-            NSLayoutConstraint.activate([
-                scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-                scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-
-                container.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-                container.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-                container.topAnchor.constraint(equalTo: scrollView.topAnchor),
-                container.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-                container.heightAnchor.constraint(equalTo: scrollView.heightAnchor),
-            ])
-        }
-
-        
-        func setViews() {
-            firstView = OnboardingPage(message:"Organize your conferences with ease", imageName:"book", isLastPage: false, color: #colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1))
-            secondView = OnboardingPage(message:"Connect with leading speakers across the globe", imageName:"connect", isLastPage: false, color: #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1))
-            thirdView = OnboardingPage(message:"Filter through speakers using our patent design", imageName:"filter", isLastPage: true, color: #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1))
-            
-            pagesArray = [firstView,secondView,thirdView]
-            
-            for page in pagesArray{
-                container.addArrangedSubview(page)
-                page.widthAnchor.constraint(equalToConstant: view.frame.size.width).isActive = true
-            }
-        }
-        
-        
-        func setPageControl(){
-            pageControl.numberOfPages = pagesArray.count
-            view.addSubview(pageControl)
-            NSLayoutConstraint.activate([
-                pageControl.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
-                pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                pageControl.heightAnchor.constraint(equalToConstant: 50)
-            ])
-        }
+    var imageConstraintStart: NSLayoutConstraint!
+    var imageConstraintEnd: NSLayoutConstraint!
+    let imageView = UIImageView()
+    let usernameTextField = TAITextField(text: "username")
+    let passwordTextField = TAITextField(text: "password")
+    let loginButton = TAIButton(text: "Log in")
+    let registrationButton = TAIButton(text: "Register")
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .systemTeal
+        configureImageView()
+        configureUsernameTF()
+        configurePasswordTF()
+        configureLoginButton()
+        configureRegisterButton()
+        createDismissKeyboardTapGesture()
     }
 
-    extension LoginVC: UIScrollViewDelegate {
-        func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-            let pageNumber = round(scrollView.contentOffset.x / scrollView.frame.size.width)
-            pageControl.currentPage = Int(pageNumber)
-        }
+    override func viewDidAppear(_ animated: Bool) {
+        
+        imageConstraintStart.isActive = false
+        imageConstraintEnd.isActive = true
+        
+        UIView.animate(withDuration: 1.59, delay: 0.2,
+                       usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+                        self.view.layoutIfNeeded()
+                        self.imageView.transform = CGAffineTransform(scaleX: 1, y: 1)
+        }, completion: nil)
+    }
+    
+    func createDismissKeyboardTapGesture(){
+        let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
+        view.addGestureRecognizer(tap)
     }
 
+    func configureImageView(){
+        view.addSubview(imageView)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "logo")!
+        
+        imageConstraintStart = imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        imageConstraintStart.isActive = true
+        
+        //Right now it's off
+        imageConstraintEnd = imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        
+        imageView.transform = CGAffineTransform(scaleX: 0, y: 0)
+
+        
+        
+        
+        NSLayoutConstraint.activate([
+            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80),
+           
+            imageView.heightAnchor.constraint(equalToConstant: 200),
+            imageView.widthAnchor.constraint(equalToConstant: 200)
+        ])
+    }
+
+    func configureUsernameTF(){
+        view.addSubview(usernameTextField)
+        
+        NSLayoutConstraint.activate([
+            usernameTextField.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 50),
+            usernameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
+            usernameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50),
+            usernameTextField.heightAnchor.constraint(equalToConstant: 50)
+        ])
+    }
+    
+    func configurePasswordTF(){
+        view.addSubview(passwordTextField)
+        passwordTextField.isSecureTextEntry = true
+
+        NSLayoutConstraint.activate([
+            passwordTextField.topAnchor.constraint(equalTo: usernameTextField.bottomAnchor, constant: 20),
+            passwordTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
+            passwordTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50),
+            passwordTextField.heightAnchor.constraint(equalToConstant: 50)
+
+        ])
+    }
+
+    
+    func configureLoginButton(){
+        view.addSubview(loginButton)
+        loginButton.addTarget(self, action: #selector(pushHomeVC), for: .touchUpInside)
+        NSLayoutConstraint.activate([
+            loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 60),
+            loginButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
+            loginButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50),
+            loginButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
+    }
+    
+    
+    func configureRegisterButton(){
+        view.addSubview(registrationButton)
+        registrationButton.translatesAutoresizingMaskIntoConstraints = false
+        registrationButton.backgroundColor = .systemGray2
+        
+        NSLayoutConstraint.activate([
+            registrationButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            registrationButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
+            registrationButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50),
+            registrationButton.heightAnchor.constraint(equalToConstant: 50)
+        
+        ])
+    }
+    
+    @objc func pushHomeVC(){
+//        self.view.window!.rootViewController = MainTabBar().createTabBar()
+    }
+    
+}
