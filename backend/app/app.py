@@ -9,8 +9,9 @@ app.secret_key = os.environ.get('APP_SECRET')
 client = pymongo.MongoClient(MONGO_URL)
 db = client.speech_connect
 
-from Users import routes
+from Users import routes as r0
 from Users.model import checkJWT
+from Events import routes as r1
 
 @app.route("/")
 @checkJWT
