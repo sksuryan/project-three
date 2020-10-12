@@ -98,7 +98,7 @@ class LoginVC: UIViewController {
     
     func configureLoginButton(){
         view.addSubview(loginButton)
-        loginButton.addTarget(self, action: #selector(pushHomeVC), for: .touchUpInside)
+        loginButton.addTarget(self, action: #selector(testLogin), for: .touchUpInside)
         NSLayoutConstraint.activate([
             loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 60),
             loginButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
@@ -112,6 +112,7 @@ class LoginVC: UIViewController {
         view.addSubview(registrationButton)
         registrationButton.translatesAutoresizingMaskIntoConstraints = false
         registrationButton.backgroundColor = .systemGray2
+        registrationButton.addTarget(self, action: #selector(pushRegistrationVC), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
             registrationButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
@@ -122,8 +123,53 @@ class LoginVC: UIViewController {
         ])
     }
     
+    @objc func testLogin(){
+        if usernameTextField.text == nil && passwordTextField.text == nil{
+            return
+        }
+        
+        let user = User(email: usernameTextField.text!, password: passwordTextField.text!)
+        let jsonData = try! JSONEncoder().encode(user)
+        let json = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)
+        print(json)
+        
+        
+        
+        let url = URL(string: "http://127.0.0.1:5000/auth/login")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let task = URLSession.shared.uploadTask(with: request, from: jsonData) { data, response, error in
+            if let error = error {
+                print ("error: \(error)")
+                return
+            }
+            if  let response = response {
+                print(response)
+                return
+            }
+//            if let mimeType = response.mimeType,
+//                mimeType == "application/json",
+//                let data = data,
+//                let dataString = String(data: data, encoding: .utf8) {
+//                print ("got data: \(dataString)")
+//            }
+        }
+        task.resume()
+
+        
+    }
+    
+    
     @objc func pushHomeVC(){
 //        self.view.window!.rootViewController = MainTabBar().createTabBar()
     }
+    
+    
+    @objc func pushRegistrationVC(){
+        self.view.window!.rootViewController = RegistrationVC()
+    }
+    
     
 }
