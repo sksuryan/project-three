@@ -1,7 +1,7 @@
 from marshmallow import fields, Schema
 from marshmallow.validate import Length
 
-class ProfileFormSchema(Schema):
+class UserProfileFormSchema(Schema):
     name = fields.Str(required=False, valdiate=Length(max=100))
     topics = fields.List(fields.Str(), required=True)
     on_location = fields.Boolean(required=True) 
@@ -13,4 +13,10 @@ class ProfileFormSchema(Schema):
     vid_list = fields.List(fields.Url(),required=False)
     dates = fields.List(fields.Date(),required=False)
 
-profile_schema = ProfileFormSchema()
+class OrgProfileFormSchema(Schema):
+    name = fields.Str(required=False, valdiate=Length(max=100))
+    weburl = fields.Url(required=True)
+    desc = fields.Str(required=False)
+
+user_profile_schema = UserProfileFormSchema()
+org_profile_schema = OrgProfileFormSchema()

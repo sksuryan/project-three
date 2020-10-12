@@ -2,7 +2,7 @@ from flask import request, jsonify, session
 from app.app import db
 from passlib.hash import pbkdf2_sha256
 from functools import wraps
-from Users.user_schema import profile_schema
+from Users.user_schema import user_profile_schema,org_profile_schema
 import uuid
 import jwt
 import  os
@@ -28,11 +28,14 @@ class User:
 
         user['password'] = pbkdf2_sha256.encrypt(user['password'])
 
-        if db.Users.find_one({'email': user['email']}):
+        if db.Users.find_one({'email': user['email']}) or db.organisers.find_one({'email': user['email']}):
             return {'error': 'email already in use'}, 400
-
-        if db.Users.insert_one(user):
-            return self.startSession(user)
+        if user["speaker"]:
+            if db.Users.insert_one(user):
+                return self.startSession(user)
+        else:
+            if db.organisers.insert_one(user):
+                return self.startSession(user)
 
         return {'error': 'Failed to signup'}, 400
 
@@ -43,9 +46,12 @@ class User:
         }
 
         data = db.Users.find_one({'email': user['email']})
-
         if data and pbkdf2_sha256.verify(user['password'],data['password']):
             return self.startSession(data)
+        
+        org_data = db.organisers.find_one({'email': user['email']})
+        if org_data and pbkdf2_sha256.verify(user['password'],org_data['password']):
+            return self.startSession(org_data)
 
         return {'error': 'Invalid credentials'}, 400
 
@@ -56,17 +62,34 @@ class User:
     def profile(self,userId):
         if (request.method=="GET"):
             data = db.Users.find_one({'_id': userId})
-            del data['password']
-            return data
+            if (data):
+                del data['password']
+                return data
+            org_data = db.organisers.find_one({'_id': userId})
+            if (org_data):
+                del org_data['password']
+                return org_data
+
         if (request.method=="PATCH"):
             data = request.json
             data.pop('token', None)
             try:
-                errors = profile_schema.validate(data)
-                if (errors):
+                user_errors = user_profile_schema.validate(data)
+                org_errors = org_profile_schema.validate(data)
+                if (user_errors and org_errors):
                     return {"message": "Invalid data entered"},500
-                db.Users.update_one({'_id' : userId}, {'$set': data})
-                return {"message": "Profile updated successfully"},200
+                if (org_errors):
+                    data = db.Users.update_one({'_id' : userId}, {'$set': data})
+                    if data.matched_count > 0:
+                        return {"message": "Profile updated successfully"},200
+                    else:
+                        return {"message": "Invalid data entered"},500
+                else:
+                    data = db.organisers.update_one({'_id' : userId}, {'$set': data})
+                    if data.matched_count > 0:
+                        return {"message": "Profile updated successfully"},200
+                    else:
+                        return {"message": "Invalid data entered"},500
             except:
                 return {'error': 'Update failed'}, 400
 
