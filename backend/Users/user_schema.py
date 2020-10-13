@@ -3,7 +3,7 @@ from marshmallow.validate import Length
 
 class UserProfileFormSchema(Schema):
     name = fields.Str(required=False, valdiate=Length(max=100))
-    topics = fields.List(fields.Str(), required=True)
+    topics = fields.List(fields.Dict(), required=True)
     on_location = fields.Boolean(required=True) 
     qualif = fields.Str(required=False)
     stream = fields.Str(required=False)
