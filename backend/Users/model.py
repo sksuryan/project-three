@@ -3,6 +3,7 @@ from app.app import db
 from passlib.hash import pbkdf2_sha256
 from functools import wraps
 from Users.user_schema import user_profile_schema,org_profile_schema
+from Topics.model import Topics
 import uuid
 import jwt
 import  os
@@ -79,8 +80,15 @@ class User:
                 if (user_errors and org_errors):
                     return {"message": "Invalid data entered"},500
                 if (org_errors):
-                    data = db.Users.update_one({'_id' : userId}, {'$set': data})
-                    if data.matched_count > 0:
+                    user = db.Users.find_one({'_id': userId})
+                    update = db.Users.update_one({'_id' : userId}, {'$set': data})
+                    if update.matched_count > 0:
+                        topics = user['topics']
+                        for i in topics:
+                            Topics().removeUser(topicId=i['_id'],UserId=userId)
+                        topics = data['topics']
+                        for i in topics:
+                            Topics().addUser(topicId=i['_id'],UserId=userId)
                         return {"message": "Profile updated successfully"},200
                     else:
                         return {"message": "Invalid data entered"},500

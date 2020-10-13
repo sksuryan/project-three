@@ -12,6 +12,7 @@ db = client.speech_connect
 from Users import routes as r0
 from Users.model import checkJWT
 from Events import routes as r1
+from Topics import routes as r2
 
 @app.route("/")
 @checkJWT
