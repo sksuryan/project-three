@@ -19,3 +19,8 @@ def signOut():
 def view_profile(userId):
 	return User().profile(userId)
 
+@app.route("/applications",methods=['POST','GET'])
+@checkJWT
+def apply_event(userId):
+	return User().apply_event(userId)
+
