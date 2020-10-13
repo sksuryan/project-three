@@ -35,7 +35,7 @@ class UserFormVC: UIViewController {
     
     
     private func addCreateButton(){
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Register", style: .done, target: self, action: #selector(createButtonPresed))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(createButtonPresed))
     }
     
     

@@ -15,14 +15,31 @@ class ProfileVC: UIViewController {
     let locationLabel = UILabel()
     let professionLabel = UILabel()
     let workExperienceLabel = UILabel()
-//    let portfolio
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        configureVC()
+        addEditButton()
     }
     
+    
+    private func configureVC(){
+        view.backgroundColor = .white
+
+    }
+    
+    
+    private func addEditButton(){
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .done, target: self, action: #selector(editButtonPresed))
+    }
+    
+    
+    @objc func editButtonPresed(){
+        navigationController?.pushViewController(UserFormVC(), animated: true)
+    }
 
 
+    
 
 }
