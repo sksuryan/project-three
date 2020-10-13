@@ -108,7 +108,7 @@ def checkJWT(f):
     @wraps(f)
     def wrap(*args, **kwargs):
         try:
-            token = request.json['token']
+            token = request.headers['token']
             data = jwt.decode(token,os.environ.get('JWT_SECRET'))
             return f(*args,**kwargs,userId=data['_id'])
         except:

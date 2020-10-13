@@ -7,7 +7,7 @@ import uuid
 class Events:
     def getEvent(self):
         try:
-            eventId = request.json['_id']
+            eventId = request.headers['_id']
             event = db.events.find_one({'_id': eventId})
             if event:
                 return jsonify(event), 200
