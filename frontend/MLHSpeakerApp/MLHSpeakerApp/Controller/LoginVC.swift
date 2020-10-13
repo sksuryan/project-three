@@ -18,10 +18,14 @@ class LoginVC: UIViewController {
     let loginButton = TAIButton(text: "Log in")
     let registrationButton = TAIButton(text: "Register")
     
-    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.isNavigationBarHidden = true
+
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemTeal
+        navigationController?.isNavigationBarHidden = true
         configureImageView()
         configureUsernameTF()
         configurePasswordTF()
@@ -168,7 +172,7 @@ class LoginVC: UIViewController {
     
     
     @objc func pushRegistrationVC(){
-        self.view.window!.rootViewController = RegistrationVC()
+        self.navigationController?.pushViewController(RegistrationVC(), animated: true)
     }
     
     

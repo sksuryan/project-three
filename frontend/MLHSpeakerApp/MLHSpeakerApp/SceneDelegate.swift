@@ -24,6 +24,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
     }
 
+    func createHomeNC() -> UINavigationController {
+        let homeVC = ViewController()
+        homeVC.title = "Projects"
+        return UINavigationController(rootViewController: homeVC)
+        
+    }
+    
+    
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
         // This occurs shortly after the scene enters the background, or when its session is discarded.
