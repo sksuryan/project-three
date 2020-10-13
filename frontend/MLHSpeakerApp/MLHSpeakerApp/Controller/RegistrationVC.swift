@@ -14,28 +14,31 @@ class RegistrationVC: UIViewController {
     let emailTextField = TAITextField(text: "Email")
     let passwordTextField = TAITextField(text: "Password")
     let speakerToggle = UISwitch()
+    let signupButton = UIButton()
     
 
-    override func viewWillAppear(_ animated: Bool) {
 
-        navigationController?.setNavigationBarHidden(false,animated: true)
-
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTextFields()
         configureToggle()
         configureViewController()
+        configureSignupButton()
     }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.setNavigationBarHidden(false,animated: true)
+    }
+    
     
     private func configureViewController(){
         view.backgroundColor = .white
-        
         navigationController?.navigationBar.prefersLargeTitles = true
-        
-        title = "New User"
+        title = "Register"
     }
+    
     
     private func configureTextFields(){
         view.addSubview(nameTextField)
@@ -65,14 +68,10 @@ class RegistrationVC: UIViewController {
             passwordTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
             passwordTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant:  -50),
             passwordTextField.heightAnchor.constraint(equalToConstant: 50),
-            
-            
-            
         
         ])
 
     }
-    
     
     
     private func configureToggle(){
@@ -80,17 +79,32 @@ class RegistrationVC: UIViewController {
         speakerToggle.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            
             speakerToggle.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor,constant: 50),
             speakerToggle.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             speakerToggle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
             speakerToggle.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant:  -50),
             speakerToggle.heightAnchor.constraint(equalToConstant: 50),
-            
-        
         ])
     }
 
 
+    private func configureSignupButton(){
+        view.addSubview(signupButton)
+        signupButton.translatesAutoresizingMaskIntoConstraints = false
+        signupButton.backgroundColor = .red
+        signupButton.addTarget(self, action: #selector(signupButtonPressed), for: .touchUpInside)
+        
+        NSLayoutConstraint.activate([
+            signupButton.topAnchor.constraint(equalTo: speakerToggle.bottomAnchor, constant: 20),
+            signupButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            signupButton.widthAnchor.constraint(equalToConstant: 50),
+            signupButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
+    }
+    
+    
+    @objc func signupButtonPressed(){
+        self.navigationController?.pushViewController(UserFormVC(), animated: true)
+    }
 
 }
