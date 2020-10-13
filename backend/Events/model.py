@@ -19,7 +19,7 @@ class Events:
     def postEvent(self,userId):
         try:
             data = request.json
-            del data['token']
+            # del data['token']
             errors = event_creation_schema.validate(data)
             data['_id'] = uuid.uuid4().hex
             data['createdBy'] = userId
@@ -49,7 +49,7 @@ class Events:
     def patchEvent(self,userId):
         try:
             data = request.json
-            del data['token']
+            # del data['token']
             eventId = data['_id']
             del data['_id']
             errors = event_creation_schema.validate(data)
@@ -77,7 +77,7 @@ class Events:
     def deleteEvent(self,userId):
         try:
             data = request.json
-            del data['token']
+            # del data['token']
             eventId = data['_id']
 
             event = db.events.find_one({'_id': eventId})

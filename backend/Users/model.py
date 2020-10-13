@@ -4,6 +4,7 @@ from passlib.hash import pbkdf2_sha256
 from functools import wraps
 from Users.user_schema import user_profile_schema,org_profile_schema
 from Topics.model import Topics
+from Events.model import Events
 import uuid
 import jwt
 import  os
@@ -101,8 +102,25 @@ class User:
             except:
                 return {'error': 'Update failed'}, 400
 
-
-
+    def apply_event(self,userId):
+        if (request.method=="POST"):
+            user_data = db.Users.find_one({"_id":userId})
+            event_id = request.json['event_id']
+            if (user_data):
+                event = Events().getEventFromId(event_id)
+                if db.applications.insert_one({
+                    "user_id":userId,
+                    "event_id":event_id,
+                    "event_name":event["name"],
+                    "organisers_id":event["createdBy"],
+                    "topics": event["topics"],
+                    "on_location":event["on_location"]
+                    }):
+                    return {"message": "Applied successfully"},200
+        else:
+            data = db.applications.find({"organisers_id": userId})
+            print (data.json())
+            return jsonify(list(data)), 200
 
 def checkJWT(f):
     @wraps(f)
