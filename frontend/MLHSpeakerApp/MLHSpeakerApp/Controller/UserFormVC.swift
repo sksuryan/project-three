@@ -27,10 +27,17 @@ class UserFormVC: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         configureTextFields()
+        addCreateButton()
         title = "New User"
         
 
     }
+    
+    
+    private func addCreateButton(){
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Register", style: .done, target: self, action: #selector(createButtonPresed))
+    }
+    
     
     private func configureTextFields(){
         view.addSubview(nameTextField)
@@ -115,17 +122,14 @@ class UserFormVC: UIViewController {
             datesInput.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             datesInput.heightAnchor.constraint(equalToConstant: 45),
             
-            
-            
-            
-            
-            
-            
         
         ])
         
     }
     
+    @objc func createButtonPresed(){
+        self.view.window?.rootViewController = MainTabBar().createTabBar()
+    }
 
-
+    
 }

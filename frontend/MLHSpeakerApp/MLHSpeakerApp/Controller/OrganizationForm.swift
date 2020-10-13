@@ -19,6 +19,17 @@ class OrganizationForm: UIViewController {
         view.backgroundColor = .white
         title = "New Organization"
         configureTextFields()
+        addCreateButton()
+    }
+    
+    
+    private func addCreateButton(){
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Register", style: .done, target: self, action: #selector(createButtonPresed))
+    }
+    
+    
+    @objc func createButtonPresed(){
+        print("click")
     }
     
     
