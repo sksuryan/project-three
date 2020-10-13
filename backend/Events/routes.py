@@ -3,13 +3,20 @@ from app.app import app
 from Users.model import checkJWT
 from Events.model import Events
 
-@app.route("/events",methods = ['GET','POST','PATCH'])
+@app.route("/event",methods = ['GET','POST','PATCH','DELETE'])
 @checkJWT
 def events(userId):
     method = request.method
     if method == 'GET':
-        return Events().getEvent(userId)
+        return Events().getEvent()
     elif method == 'POST':
         return Events().postEvent(userId)
-    else:
+    elif method == 'PATCH':
         return Events().patchEvent(userId)
+    else:
+        return Events().deleteEvent(userId)
+
+@app.route('/feed', methods = ['GET'])
+@checkJWT
+def feed(userId):
+    return Events().feed(userId)
