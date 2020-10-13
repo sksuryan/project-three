@@ -14,7 +14,8 @@ class RegistrationVC: UIViewController {
     let emailTextField = TAITextField(text: "Email")
     let passwordTextField = TAITextField(text: "Password")
     let speakerToggle = UISwitch()
-    let signupButton = UIButton()
+    let userSignUpButton = UIButton()
+    let organizationSignUpButton = UIButton()
     
 
 
@@ -24,7 +25,8 @@ class RegistrationVC: UIViewController {
         configureTextFields()
         configureToggle()
         configureViewController()
-        configureSignupButton()
+        configureUserSignupButton()
+        configureOrgSignupButton()
     }
     
     
@@ -48,6 +50,8 @@ class RegistrationVC: UIViewController {
         nameTextField.translatesAutoresizingMaskIntoConstraints = false
         emailTextField.translatesAutoresizingMaskIntoConstraints = false
         passwordTextField.translatesAutoresizingMaskIntoConstraints = false
+        passwordTextField.isSecureTextEntry = true
+        
         
         NSLayoutConstraint.activate([
             nameTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,constant: 50),
@@ -88,23 +92,42 @@ class RegistrationVC: UIViewController {
     }
 
 
-    private func configureSignupButton(){
-        view.addSubview(signupButton)
-        signupButton.translatesAutoresizingMaskIntoConstraints = false
-        signupButton.backgroundColor = .red
-        signupButton.addTarget(self, action: #selector(signupButtonPressed), for: .touchUpInside)
+    private func configureUserSignupButton(){
+        view.addSubview(userSignUpButton)
+        userSignUpButton.translatesAutoresizingMaskIntoConstraints = false
+        userSignUpButton.backgroundColor = .red
+        userSignUpButton.addTarget(self, action: #selector(userSignupButtonPressed), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
-            signupButton.topAnchor.constraint(equalTo: speakerToggle.bottomAnchor, constant: 20),
-            signupButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            signupButton.widthAnchor.constraint(equalToConstant: 50),
-            signupButton.heightAnchor.constraint(equalToConstant: 50)
+            userSignUpButton.topAnchor.constraint(equalTo: speakerToggle.bottomAnchor, constant: 20),
+            userSignUpButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            userSignUpButton.widthAnchor.constraint(equalToConstant: 50),
+            userSignUpButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
     
     
-    @objc func signupButtonPressed(){
+    private func configureOrgSignupButton(){
+        view.addSubview(organizationSignUpButton)
+        organizationSignUpButton.translatesAutoresizingMaskIntoConstraints = false
+        organizationSignUpButton.backgroundColor = .blue
+        organizationSignUpButton.addTarget(self, action: #selector(orgSignupButtonPressed), for: .touchUpInside)
+        
+        NSLayoutConstraint.activate([
+            organizationSignUpButton.topAnchor.constraint(equalTo: speakerToggle.bottomAnchor, constant: 20),
+            organizationSignUpButton.leadingAnchor.constraint(equalTo: userSignUpButton.trailingAnchor, constant: 20),
+            organizationSignUpButton.widthAnchor.constraint(equalToConstant: 50),
+            organizationSignUpButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
+    }
+    
+    @objc func userSignupButtonPressed(){
         self.navigationController?.pushViewController(UserFormVC(), animated: true)
+    }
+
+    
+    @objc func orgSignupButtonPressed(){
+        self.navigationController?.pushViewController(OrganizationForm(), animated: true)
     }
 
 }
