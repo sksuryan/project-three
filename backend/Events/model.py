@@ -101,6 +101,24 @@ class Events:
         except:
             return jsonify({'error': 'Something wrong with the request'}), 400
 
-    # def feed(self,userId):
-    #     try:
-    #         user = db.Users.find_one({'_id': userId})
+    def feed(self,userId):
+        try:
+            user = db.Users.find_one({'_id': userId})
+            if user:
+                topics = user['topics']
+                print(topics)
+                eventIds = set()
+                for i in topics:
+                    eventIds.update(Topics().getEventIdsFromTopic(topicId=i['_id']))
+                eventIds = list(eventIds)
+                events = []
+                for i in eventIds:
+                    events.append(self.getEventFromId(eventId=i))
+                return jsonify(events), 200
+        except:
+            raise
+            return jsonify({'error': 'Something went wrong'}), 400
+
+    def getEventFromId(self,eventId):
+        event = db.events.find_one({'_id': eventId})
+        return event

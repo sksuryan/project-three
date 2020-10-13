@@ -5,6 +5,9 @@ class Topics:
     def getTopics(self):
         data = db.topics.find({})
         data = list(data)
+        for i in data:
+            del i['users']
+            del i['events']
         return jsonify(data), 200
 
     def getTopic(self,topicId):
@@ -42,3 +45,8 @@ class Topics:
         events = list(events)
         topic = db.topics.update_one({'_id': topicId},{'$set': {'events': events}})
         return
+
+    def getEventIdsFromTopic(self,topicId):
+        topic = db.topics.find_one({'_id': topicId})
+        events = set(topic['events'])
+        return events

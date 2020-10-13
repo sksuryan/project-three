@@ -16,7 +16,7 @@ def events(userId):
     else:
         return Events().deleteEvent(userId)
 
-# @app.route('/feed', method = ['GET']):
-# @checkJWT
-# def feed(userId):
-    
+@app.route('/feed', methods = ['GET'])
+@checkJWT
+def feed(userId):
+    return Events().feed(userId)
