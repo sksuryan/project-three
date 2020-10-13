@@ -51,6 +51,7 @@ class ViewController: UIViewController {
             setupScrollView()
             setViews()
             setPageControl()
+            
         }
 
         func setupScrollView(){
@@ -98,6 +99,8 @@ class ViewController: UIViewController {
             ])
         }
     }
+
+
 
     extension ViewController: UIScrollViewDelegate {
         func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {

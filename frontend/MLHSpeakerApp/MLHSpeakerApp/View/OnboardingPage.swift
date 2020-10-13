@@ -94,7 +94,7 @@ class OnboardingPage: UIView {
     }
     
     @objc func pushNavigationController(){
-        self.window!.rootViewController = LoginVC()
+        self.window!.rootViewController = createLoginNC()
     }
     
     func setGradient(){
@@ -103,6 +103,12 @@ class OnboardingPage: UIView {
         gradientLayer.locations = [0.0, 3.0]
         gradientLayer.frame = self.bounds
         layer.insertSublayer(gradientLayer, at: 0)
+    }
+    
+    func createLoginNC() -> UINavigationController {
+        let loginVC = LoginVC()
+        return UINavigationController(rootViewController: loginVC)
+        
     }
     
     override func layoutSubviews() {
