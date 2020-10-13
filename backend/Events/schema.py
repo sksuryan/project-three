@@ -3,7 +3,7 @@ from marshmallow.validate import Length
 
 class EventCreationSchema(Schema):
     name = fields.Str(required=True, valdiate=Length(max=100))
-    topics = fields.List(fields.Str(), required=True)
+    topics = fields.List(fields.Dict(), required=True)
     on_location = fields.Boolean(required=True) 
     details = fields.String(required=True)
     dates = fields.List(fields.Date(),required=False)
