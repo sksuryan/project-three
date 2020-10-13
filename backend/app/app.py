@@ -1,10 +1,12 @@
 from flask import Flask, request
 from flask_pymongo import pymongo
+from flask_cors import CORS
 import os
 
 MONGO_URL = os.environ.get('DB_URL')
 
 app = Flask(__name__)
+CORS(app)
 app.secret_key = os.environ.get('APP_SECRET')
 client = pymongo.MongoClient(MONGO_URL)
 db = client.speech_connect
