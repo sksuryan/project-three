@@ -102,7 +102,7 @@ class LoginVC: UIViewController {
     
     func configureLoginButton(){
         view.addSubview(loginButton)
-//        loginButton.addTarget(self, action: #selector(testLogin), for: .touchUpInside)
+        loginButton.addTarget(self, action: #selector(testLogin), for: .touchUpInside)
         NSLayoutConstraint.activate([
             loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 60),
             loginButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
@@ -127,39 +127,32 @@ class LoginVC: UIViewController {
         ])
     }
     
-//    @objc func testLogin(){
-//        if usernameTextField.text == nil && passwordTextField.text == nil{
-//            return
-//        }
-//
-//        let user = User(email: usernameTextField.text!, password: passwordTextField.text!)
-//        let jsonData = try! JSONEncoder().encode(user)
-//        let json = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)
-//        print(json)
-//
-//
-//
-//        let url = URL(string: "http://127.0.0.1:5000/auth/login")!
-//        var request = URLRequest(url: url)
-//        request.httpMethod = "POST"
-//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//
-//        let task = URLSession.shared.uploadTask(with: request, from: jsonData) { data, response, error in
-//            if let error = error {
-//                print ("error: \(error)")
-//                return
-//            }
-//            if  let response = response {
-//                print(response)
-//                return
-//            }
-//
-//        }
-//        task.resume()
-//
-//
-//    }
-//
+    @objc func testLogin(){
+        if usernameTextField.text == nil && passwordTextField.text == nil{
+            return
+        }
+
+        let user = User(email: usernameTextField.text!, password: passwordTextField.text!)
+        let jsonData = try! JSONEncoder().encode(user)
+
+        NetworkManager.shared.getToken(userData: jsonData) { [weak self] (result) in
+            
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let token):
+                print(token)
+                
+            case .failure(let error):
+                print(error.rawValue)
+                let alert = UIAlertController(title: "Error", message: error.rawValue, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                self.present(alert,animated: true)
+            }
+        }
+
+    }
+
 
     
     @objc func pushRegistrationVC(){

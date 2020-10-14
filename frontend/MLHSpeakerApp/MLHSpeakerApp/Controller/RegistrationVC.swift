@@ -35,36 +35,36 @@ class RegistrationVC: UIViewController {
     }
     
     
-    @objc func signUpButtonPressed(){
-        
-        let user = User(name: nameTextField.text!, email: emailTextField.text!, password: passwordTextField.text!, isSpeaker: speakerToggle.isOn)
-        let jsonData = try! JSONEncoder().encode(user)
-        let json = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)
-        
-
-
-
-        let url = URL(string: "http://127.0.0.1:5000/auth/signup")!
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
-        let task = URLSession.shared.uploadTask(with: request, from: jsonData) { data, response, error in
-            if let error = error {
-                print ("error: \(error)")
-                return
-            }
-            if  let response = response {
-                print(response)
-                return
-            }
-
-        }
-        task.resume()
-
-        
-        
-    }
+//    @objc func signUpButtonPressed(){
+//
+//        let user = User(name: nameTextField.text!, email: emailTextField.text!, password: passwordTextField.text!, isSpeaker: speakerToggle.isOn)
+//        let jsonData = try! JSONEncoder().encode(user)
+//        let json = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)
+//
+//
+//
+//
+//        let url = URL(string: "http://127.0.0.1:5000/auth/signup")!
+//        var request = URLRequest(url: url)
+//        request.httpMethod = "POST"
+//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//
+//        let task = URLSession.shared.uploadTask(with: request, from: jsonData) { data, response, error in
+//            if let error = error {
+//                print ("error: \(error)")
+//                return
+//            }
+//            if  let response = response {
+//                print(response)
+//                return
+//            }
+//
+//        }
+//        task.resume()
+//
+//
+//
+//    }
 
 
 
@@ -141,7 +141,7 @@ class RegistrationVC: UIViewController {
         view.addSubview(signupButton)
         signupButton.translatesAutoresizingMaskIntoConstraints = false
         signupButton.backgroundColor = .systemBlue
-        signupButton.addTarget(self, action: #selector(signUpButtonPressed), for: .touchUpInside)
+//        signupButton.addTarget(self, action: #selector(signUpButtonPressed), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
         
