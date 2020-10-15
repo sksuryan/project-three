@@ -13,3 +13,11 @@ struct User: Codable {
     var email: String
     var password: String
 }
+
+struct UserSignUp: Codable {
+
+    var name: String
+    var email: String
+    var password: String
+    var isSpeaker: Bool
+}

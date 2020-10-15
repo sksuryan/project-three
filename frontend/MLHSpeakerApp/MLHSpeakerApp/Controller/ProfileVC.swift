@@ -26,6 +26,7 @@ class ProfileVC: UIViewController {
     
     private func configureVC(){
         view.backgroundColor = .white
+        navigationController?.navigationBar.prefersLargeTitles = true
 
     }
     

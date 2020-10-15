@@ -46,6 +46,45 @@ class LoginVC: UIViewController {
         }, completion: nil)
     }
     
+    
+    @objc func loginButtonPressed(){
+        if usernameTextField.text == nil && passwordTextField.text == nil{
+            return
+        }
+
+        let user = User(email: usernameTextField.text!, password: passwordTextField.text!)
+        let jsonData = try! JSONEncoder().encode(user)
+
+        NetworkManager.shared.getToken(userData: jsonData) { [weak self] (result) in
+            
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let token):
+                print(token)
+                DispatchQueue.main.sync {
+                    self.navigationController?.pushViewController(MainTabBar().createTabBar(), animated: true)
+                }
+                
+            case .failure(let error):
+                print(error.rawValue)
+                let alert = UIAlertController(title: "Error", message: error.rawValue, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                DispatchQueue.main.sync {
+                    self.present(alert,animated: true)
+                }
+            }
+        }
+
+    }
+
+
+    
+    @objc func pushRegistrationVC(){
+        self.navigationController?.pushViewController(RegistrationVC(), animated: true)
+    }
+    
+    
     func createDismissKeyboardTapGesture(){
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
         view.addGestureRecognizer(tap)
@@ -58,15 +97,9 @@ class LoginVC: UIViewController {
         
         imageConstraintStart = imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         imageConstraintStart.isActive = true
-        
-        //Right now it's off
         imageConstraintEnd = imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        
         imageView.transform = CGAffineTransform(scaleX: 0, y: 0)
 
-        
-        
-        
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80),
            
@@ -75,6 +108,7 @@ class LoginVC: UIViewController {
         ])
     }
 
+    
     func configureUsernameTF(){
         view.addSubview(usernameTextField)
         
@@ -85,6 +119,7 @@ class LoginVC: UIViewController {
             usernameTextField.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
+    
     
     func configurePasswordTF(){
         view.addSubview(passwordTextField)
@@ -102,7 +137,7 @@ class LoginVC: UIViewController {
     
     func configureLoginButton(){
         view.addSubview(loginButton)
-        loginButton.addTarget(self, action: #selector(testLogin), for: .touchUpInside)
+        loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
         NSLayoutConstraint.activate([
             loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 60),
             loginButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
@@ -126,38 +161,5 @@ class LoginVC: UIViewController {
         
         ])
     }
-    
-    @objc func testLogin(){
-        if usernameTextField.text == nil && passwordTextField.text == nil{
-            return
-        }
 
-        let user = User(email: usernameTextField.text!, password: passwordTextField.text!)
-        let jsonData = try! JSONEncoder().encode(user)
-
-        NetworkManager.shared.getToken(userData: jsonData) { [weak self] (result) in
-            
-            guard let self = self else { return }
-            
-            switch result {
-            case .success(let token):
-                print(token)
-                
-            case .failure(let error):
-                print(error.rawValue)
-                let alert = UIAlertController(title: "Error", message: error.rawValue, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-                self.present(alert,animated: true)
-            }
-        }
-
-    }
-
-
-    
-    @objc func pushRegistrationVC(){
-        self.navigationController?.pushViewController(RegistrationVC(), animated: true)
-    }
-    
-    
 }
