@@ -23,7 +23,7 @@ User Feed            |  User Profile
 
 * iOS Interface:
 
-![](https://user-images.githubusercontent.com/42820001/96287897-32027b80-1000-11eb-9e2a-ed73f2b003f5.png) |  ![](https://user-images.githubusercontent.com/42820001/96288017-62e2b080-1000-11eb-8bdd-20bd9e4880d6.png) |  ![](https://user-images.githubusercontent.com/42820001/96287965-4e9eb380-1000-11eb-8293-28f4ff5f4944.png)
+![](https://user-images.githubusercontent.com/42820001/96288799-9e31af00-1001-11eb-9b97-636da2896c8a.gif)
 
 User Login/Register            |  User Portfolio
 :-------------------------:|:-------------------------:
