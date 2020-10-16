@@ -38,6 +38,8 @@ User Feed            |  User Profile
 
 Our app lets the users register using Email, Name, Password as a Speaker or an Organiser. The user is redirected to a `/feed` page where the speaker is suggested events matching the topics of his interest. The Speaker can apply to events of his choice from the feed and each application shows up on the organiser's dashboard for selecting users for the speeches.
 
+![](https://user-images.githubusercontent.com/42820001/96285988-53ae3380-0ffd-11eb-84d9-dfd543b82eb7.png)
+
 #### For speakers:
 
 `SignUp` -> `Login` -> `Feed` -> `Apply` -> Attend!
