@@ -8,7 +8,20 @@ We have interfaces for speakers and organisers.
 Our app will help you build your portflio and suggest conferences and meetings based on the interests and expertise in topics.
 - If you are an organiser:
 Our app will help you post events for your organisation and display the speakers who have applied to each event. 
-![Alt text](https://user-images.githubusercontent.com/42820001/95942857-e4b8bb00-0e01-11eb-8ebc-7df71f9c8e5e.png)
+
+### App Overview: 
+
+* Web:
+
+![Alt text](https://user-images.githubusercontent.com/42820001/96284855-cf0ee580-0ffb-11eb-8b42-b44b8ade9a2e.png)
+
+
+User Feed            |  User Profile
+:-------------------------:|:-------------------------:
+![](https://user-images.githubusercontent.com/42820001/96285304-66743880-0ffc-11eb-8c39-c95f17359bfd.png) |  ![](https://user-images.githubusercontent.com/42820001/96285665-e13d5380-0ffc-11eb-90ff-9264c621362e.png)
+
+
+
 
 ### Tech Stack used:
 
