@@ -8,9 +8,15 @@
 
 import UIKit
 
+protocol getEventDelegate {
+    func saveEvent()
+}
+
 class HomeVC: UIViewController {
     
     let tableView = UITableView()
+    var eventList: [Event] = [Event(name: "Chocolate", date: "Tomrrow")]
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,7 +24,14 @@ class HomeVC: UIViewController {
         title = "Events"
         navigationController?.navigationBar.prefersLargeTitles = true
         view.backgroundColor = .systemBackground
+        addRightBarButton()
     }
+    
+    
+    private func addRightBarButton(){
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .done, target: self, action: #selector(eventButtonPressed))
+    }
+    
     
     private func configureTableView(){
         view.addSubview(tableView)
@@ -26,7 +39,7 @@ class HomeVC: UIViewController {
         tableView.rowHeight = 100
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "EventCell")
+        tableView.register(EventCell.self, forCellReuseIdentifier: "EventCell")
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -36,7 +49,11 @@ class HomeVC: UIViewController {
     
         ])
     }
-
+    
+    
+    @objc func eventButtonPressed(){
+        navigationController?.pushViewController(NewEventVC(), animated: true)
+    }
 }
 
 extension HomeVC: UITableViewDelegate {
@@ -45,12 +62,15 @@ extension HomeVC: UITableViewDelegate {
 
 extension HomeVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return eventList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "EventCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "EventCell", for: indexPath) as! EventCell
+        cell.nameLabel.text = eventList[indexPath.row].name
+        cell.dateLabel.text = eventList[indexPath.row].date
         return cell
+
     }
     
     
